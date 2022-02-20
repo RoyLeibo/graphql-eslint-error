@@ -14,4 +14,4 @@ You will came across the following error: "ESLint: Rule 'unique-argument-names' 
 The error is caused by the following rule: "@graphql-eslint/unique-input-field-names"
 The same error appears for all rules that required to lint the whole schemas and operation files.
 
-I have tried too many values for the parserOptions.schema field, but any of them solved it.
+No matter which value I have assigned to the parserOptions.schema field it didn't solved it.
