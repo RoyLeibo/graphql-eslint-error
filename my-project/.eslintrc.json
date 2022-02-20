@@ -1,0 +1,87 @@
+{
+  "root": true,
+  // Each override object respossible for a different type of files to lint.
+  // The first one defines the 'ts', 'tsx' files and the second 'graphql' files.
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "project": "tsconfig.json",
+        "sourceType": "module"
+      },
+      "env": {
+        "node": true,
+        "jest": true
+      },
+      "excludedFiles": [".eslintrc.js", "*.graphql", "*.generated.*"],
+      "rules": {
+        // Every rule should have a justification comment
+        // TODO: Rethink disabled airbnb eslint rules - https://transmitsecurity.atlassian.net/browse/UID-27
+
+        // Justification: Enable using @ts-ignore comments (mostly for using 3rd party libraries)
+        "@typescript-eslint/ban-ts-comment": "warn",
+
+        // Justification: Ignore pattern for unused variables with _ prefix
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
+        ],
+
+        // Justification: To be able to use _ as unsued var
+        "no-underscore-dangle": "off",
+
+        "no-return-await": "error",
+
+        // Justification: nestjs dependency injection uses empty constructors
+        "no-empty-function": ["error", { "allow": ["constructors"] }],
+
+        // Justification: nestjs services
+        "class-methods-use-this": "off",
+
+        // Justification: only for dev dependecies
+        "import/no-extraneous-dependencies": [
+          "error",
+          { "devDependencies": true }
+        ],
+
+        // Justification: Enable the use for 3rd party libraries
+        "react/jsx-props-no-spreading": "off",
+
+        // Justification: only for function that need explicit naming
+        "func-names": ["error", "as-needed"],
+
+        // Justification: No need when using typescript
+        "react/require-default-props": "off",
+
+        // Justification: Should use bindid-core logger
+        "no-console": "error"
+      }
+    },
+    {
+      "files": ["*.graphql"],
+      "excludedFiles": ["*.ts, *.tsx", "*.generated.*"],
+      "parser": "@graphql-eslint/eslint-plugin",
+      "plugins": ["@graphql-eslint"],
+      // roles: https://github.com/dotansimha/graphql-eslint/blob/master/docs/README.md
+      // currently only roles that do not require any schema specification. Task: https://transmitsecurity.atlassian.net/browse/UID-424?atlOrigin=eyJpIjoiMWMwY2IwYWViZDQ2NDJmNWIwYzZhOTk4Y2Y2ODEwYWEiLCJwIjoiaiJ9
+      // notice that the action for each role is defined as the following: 0: ignore, 1: warning, 2: error
+      "rules": {
+        "@graphql-eslint/naming-convention": 1,
+        "@graphql-eslint/no-anonymous-operations": 2,
+        "@graphql-eslint/no-duplicate-fields": 2,
+        "@graphql-eslint/no-hashtag-description": 2,
+        "@graphql-eslint/unique-enum-value-names": 2,
+        "@graphql-eslint/unique-field-definition-names": 2,
+        // This is the role that causes the error, it requires a parserOptions.schema to be specified
+        "@graphql-eslint/unique-input-field-names": 2,
+        "@graphql-eslint/unique-argument-names": 2,
+        "@graphql-eslint/require-description": [
+          1,
+          { "types": true, "ScalarTypeDefinition": false }
+        ],
+        "prettier/prettier": "warn"
+      }
+    }
+  ]
+}
