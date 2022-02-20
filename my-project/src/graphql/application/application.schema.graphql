@@ -1,0 +1,45 @@
+extend type Query {
+  apps: [App]!
+  app(_id: ObjectId!): App
+  appsCount: Int
+}
+
+extend type Mutation {
+  createApp(input: AppInput!): App
+  updateApp(_id: ObjectId!, appInput: AppInput!): App
+  deleteApp(_id: ObjectId!): Boolean
+}
+
+type shimon {
+  name: String
+}
+
+type App @key(fields: "_id") {
+  _id: ObjectId
+  name: String
+  description: String
+  logo: String
+  optionsURLPrefix: String
+  clientId: String
+  clientDisplayName: String
+  clientDescription: String
+  clientSecret: String
+  redirectURIs: [String]
+  showMobileWebBanner: Boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input AppInput {
+  name: String
+  description: String
+  logo: String
+  optionsURLPrefix: String
+  clientDisplayName: String
+  clientDescription: String
+  redirectURIs: [String]
+  showMobileWebBanner: Boolean = false
+}
+
+scalar ObjectId
+scalar DateTime

@@ -1,0 +1,52 @@
+query getAllApps {
+  apps {
+    ...AppFields
+  }
+}
+
+query getApp($_id: ObjectId!) {
+  app(_id: $_id) {
+    ...AppFields
+  }
+}
+
+query appsCount {
+  appsCount
+}
+
+mutation createApp($appInput: AppInput!) {
+  createApp(appInput: $appInput) {
+    ...CreateAppFields
+  }
+}
+
+mutation updateApp($_id: ObjectId!, $appInput: AppInput!) {
+  updateApp(_id: $_id, appInput: $appInput) {
+    ...AppFields
+  }
+}
+
+mutation deleteApp($_id: ObjectId!) {
+  deleteApp(_id: $_id)
+}
+
+fragment CreateAppFields on App {
+  name
+  name
+  description
+  logo
+  optionsURLPrefix
+  clientDisplayName
+  clientDescription
+  redirectURIs
+  showMobileWebBanner
+}
+
+fragment AppFields on App {
+  ...CreateAppFields
+  _id
+  clientId
+  clientSecret
+  createdAt
+  updatedAt
+}
